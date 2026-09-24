@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ScamTrap AI // Voice Honeypot & Intel Matrix</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="app-wrapper">
+    <!-- Top Cyber HUD Header -->
+    <header class="hud-header">
+      <div class="header-left">
+        <div class="brand-logo">
+          <div class="radar-scan">
+            <span class="pulse-ring"></span>
+            <svg class="shield-icon" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              <path d="m9 12 2 2 4-4"/>
+            </svg>
+          </div>
+          <div>
+            <div class="brand-title">
+              <span class="glitch-text" data-text="SCAMTRAP">SCAMTRAP</span>
+              <span class="badge-version">v2.4 TELEPHONY</span>
+            </div>
+            <p class="brand-subtitle">Autonomous Voice Honeypot & Real-Time Threat Intel Extractor</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="header-center">
+        <div class="telemetry-bar">
+          <div class="telemetry-item">
+            <span class="telemetry-label">CALL DURATION</span>
+            <span id="call-timer" class="telemetry-val">00:00</span>
+          </div>
+          <div class="telemetry-divider"></div>
+          <div class="telemetry-item">
+            <span class="telemetry-label">AUDIO INGEST</span>
+            <span id="ingest-status" class="telemetry-val">16kHz PCM</span>
+          </div>
+          <div class="telemetry-divider"></div>
+          <div class="telemetry-item">
+            <span class="telemetry-label">ASSEMBLYAI STT</span>
+            <span class="telemetry-val text-cyan">LIVE STREAM v3</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="header-right">
+        <div id="status-pill" class="pill standby">
+          <span class="status-dot"></span>
+          <span class="status-text">CONNECTING...</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Workspace Grid -->
+    <main class="grid-layout">
+      <!-- Left Column: Audio Telephony & Conversation Console -->
+      <section class="card terminal-card">
+        <div class="card-header">
+          <div class="card-title-group">
+            <svg class="header-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+            </svg>
+            <h2>Live Telephony Stream & Agent Console</h2>
+          </div>
+          <div class="audio-visualizer-bar" id="audio-visualizer" title="Audio Activity">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+          </div>
+        </div>
+
+        <!-- Quick Honeypot Persona Info Bar -->
+        <div class="persona-banner">
+          <div class="persona-avatar">👴</div>
+          <div class="persona-details">
+            <div class="persona-name-row">
+              <strong>Harold Vance (78 yrs)</strong>
+              <span class="persona-tag">Target Honeypot Persona</span>
+            </div>
+            <p class="persona-desc">Retired accountant • Hard of hearing • Intentionally slow & confused • Stalls scammers to harvest mule intel</p>
+          </div>
+        </div>
+
+        <!-- Transcript Feed Box -->
+        <div class="feed-container">
+          <div class="feed-subhead">
+            <span class="feed-title">REAL-TIME CONVERSATION LOG</span>
+            <button id="clear-feed-btn" class="btn-ghost-sm" title="Clear chat feed">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 6h18m-2 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+              </svg>
+              Clear
+            </button>
+          </div>
+          <div id="transcript-box" class="feed-box">
+            <div class="system-notice">
+              <span class="notice-icon">ℹ</span>
+              <span>Honeypot channel initialized. Click <strong>Start Speaking (Mic)</strong> or send simulated scam prompts below.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Simulation Quick Prompts -->
+        <div class="simulation-section">
+          <span class="sim-label">Quick Scammer Test Lines:</span>
+          <div class="sim-chips">
+            <button class="chip-btn" data-text="This is Officer Miller from Federal Trade Commission. You have an arrest warrant!">🚨 FTC Arrest Threat</button>
+            <button class="chip-btn" data-text="Your computer has 12 viruses! Please download AnyDesk immediately from www.help-desk99.com">💻 Tech Support Virus</button>
+            <button class="chip-btn" data-text="Transfer $4,500 to Bank of America Account 8839201948 or purchase Target gift cards immediately!">💳 Bank / Wire Scam</button>
+          </div>
+        </div>
+
+        <!-- Audio & Text Controls -->
+        <div class="controls-wrapper">
+          <div class="controls-top">
+            <button id="mic-btn" class="btn-primary-mic">
+              <svg class="mic-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
+                <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                <line x1="12" x2="12" y1="19" y2="22"/>
+              </svg>
+              <span>Start Speaking (AssemblyAI Mic)</span>
+            </button>
+          </div>
+          <div class="controls-input-group">
+            <div class="input-container">
+              <svg class="input-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+              </svg>
+              <input type="text" id="manual-input" placeholder="Type what the scammer says (or press Enter)..." autocomplete="off" />
+            </div>
+            <button id="send-btn" class="btn-send">
+              <span>Send</span>
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="22" y1="2" x2="11" y2="13"/>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right Column: Live Threat Intel Extraction & Forensics Matrix -->
+      <section class="card dashboard-card">
+        <div class="card-header">
+          <div class="card-title-group">
+            <svg class="header-icon text-amber" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="8" x2="12" y2="12"/>
+              <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+            <h2>Live Fraud Intel Matrix</h2>
+          </div>
+          <span class="live-pulse-badge">
+            <span class="pulse-dot"></span>
+            ANALYZING
+          </span>
+        </div>
+
+        <!-- Strategy Progression Phases -->
+        <div class="intel-box phase-tracker-box">
+          <div class="box-title-row">
+            <span class="box-title">HONEYPOT TRAP PHASE</span>
+            <span id="agent-phase" class="phase-badge phase-hooking">hooking</span>
+          </div>
+          <div class="phase-steps-bar" id="phase-steps">
+            <div class="phase-step active" data-phase="hooking">
+              <span class="step-num">1</span>
+              <span class="step-name">Hooking</span>
+            </div>
+            <div class="phase-step" data-phase="feigning_confusion">
+              <span class="step-num">2</span>
+              <span class="step-name">Confusion</span>
+            </div>
+            <div class="phase-step" data-phase="stalling">
+              <span class="step-num">3</span>
+              <span class="step-name">Stalling</span>
+            </div>
+            <div class="phase-step" data-phase="extracting">
+              <span class="step-num">4</span>
+              <span class="step-name">Extracting</span>
+            </div>
+            <div class="phase-step" data-phase="wrap_up">
+              <span class="step-num">5</span>
+              <span class="step-name">Wrap Up</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Metrics Overview Grid -->
+        <div class="metrics-grid">
+          <!-- Urgency Metric -->
+          <div class="metric-card">
+            <div class="metric-head">
+              <span class="metric-label">URGENCY LEVEL</span>
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+              </svg>
+            </div>
+            <div class="metric-body">
+              <span id="threat-urgency" class="urgency-pill urgency-low">Low</span>
+            </div>
+          </div>
+
+          <!-- Claimed Identity Metric -->
+          <div class="metric-card">
+            <div class="metric-head">
+              <span class="metric-label">CLAIMED IDENTITY</span>
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+            </div>
+            <div class="metric-body">
+              <span id="claimed-id" class="identity-text">None Detected</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Extracted Intel Sections -->
+        <div class="intel-accordion">
+          <!-- Tactics Used -->
+          <div class="intel-block">
+            <div class="block-header">
+              <div class="block-title">
+                <span class="block-icon">🎯</span>
+                <span>Social Engineering Tactics</span>
+              </div>
+              <span class="intel-count" id="tactics-count">0</span>
+            </div>
+            <ul id="tactics-list" class="tag-list">
+              <li class="empty-state">No tactics logged yet</li>
+            </ul>
+          </div>
+
+          <!-- Accounts / Targets -->
+          <div class="intel-block">
+            <div class="block-header">
+              <div class="block-title">
+                <span class="block-icon">🏦</span>
+                <span>Mule Accounts & Payment Targets</span>
+              </div>
+              <span class="intel-count" id="accounts-count">0</span>
+            </div>
+            <ul id="accounts-list" class="intel-list">
+              <li class="empty-state">Awaiting account or crypto wallet extraction...</li>
+            </ul>
+          </div>
+
+          <!-- URLs & Remote Access Tools -->
+          <div class="intel-block">
+            <div class="block-header">
+              <div class="block-title">
+                <span class="block-icon">🔗</span>
+                <span>Malicious URLs & Remote Tools</span>
+              </div>
+              <span class="intel-count" id="urls-count">0</span>
+            </div>
+            <ul id="urls-list" class="intel-list">
+              <li class="empty-state">Awaiting link or software indicator...</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Action Footer -->
+        <div class="dashboard-footer">
+          <button id="copy-intel-btn" class="btn-secondary-full">
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2">
+              <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
+              <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+            </svg>
+            <span>Export Intel Report (JSON)</span>
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="toast-container"></div>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
